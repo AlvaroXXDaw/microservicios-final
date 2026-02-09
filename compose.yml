@@ -34,6 +34,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
 
+  ngrok:
+    image: ngrok/ngrok
+    command: http webserver:80
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    depends_on:
+      - webserver
+
 volumes:
   db_data:
   portainer_data:
