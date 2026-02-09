@@ -1,7 +1,8 @@
 <?php
+
 /**
  * Configuración de la Base de Datos y CORS
- * Tienda Online - Backend PHP
+ * Tienda Online - Backend PHP (Docker)
  */
 
 // ============================================
@@ -10,37 +11,29 @@
 session_start();
 
 // ============================================
-// CONFIGURACIÓN DE LA BASE DE DATOS
+// CONFIGURACIÓN DE LA BASE DE DATOS (DOCKER)
 // ============================================
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// En Docker NO es localhost: el host es el nombre del servicio MySQL en compose: "db"
+define('DB_HOST', 'db');
+define('DB_USER', 'app');        // MYSQL_USER en .env
+define('DB_PASS', 'secret');     // MYSQL_PASSWORD en .env
 define('DB_NAME', 'tienda_online');
-
-// ============================================
-// CREAR CONEXIÓN A LA BASE DE DATOS
-// ============================================
-$conexion = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-// Verificar conexión
-if ($conexion->connect_error) {
-    http_response_code(500);
-    die(json_encode([
-        'success' => false,
-        'error' => 'Error de conexión a la base de datos',
-        'details' => $conexion->connect_error
-    ]));
-}
-
-// Establecer charset UTF-8
-$conexion->set_charset("utf8mb4");
 
 // ============================================
 // CONFIGURACIÓN DE HEADERS CORS
 // ============================================
-// IMPORTANTE: Para usar credentials (cookies), Origin NO puede ser *
-header('Access-Control-Allow-Origin: http://localhost:4200');
-header('Access-Control-Allow-Credentials: true');
+// Para no bloquearte con ngrok, dejamos origen dinámico si viene ORIGIN.
+// Si no viene, permitimos todo sin credenciales.
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+if ($origin) {
+    header("Access-Control-Allow-Origin: $origin");
+    header('Access-Control-Allow-Credentials: true');
+} else {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Credentials: false');
+}
+
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 header('Content-Type: application/json; charset=utf-8');
@@ -52,4 +45,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
-?>
+
+// ============================================
+// CREAR CONEXIÓN A LA BASE DE DATOS
+// ============================================
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+try {
+    $conexion = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    $conexion->set_charset("utf8mb4");
+} catch (mysqli_sql_exception $e) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Error de conexión a la base de datos',
+        'details' => $e->getMessage()
+    ]);
+    exit();
+}
