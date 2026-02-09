@@ -15,7 +15,7 @@ import { PuntoAComaPipe } from '../../pipes/punto-a-coma.pipe';
 export class AdminComponent {
   private http = inject(HttpClient);
   private productData = inject(ProductData);
-  private apiUrl = 'http://localhost/DWEC/Angular/ProyectoMio/backend';
+  private apiUrl = '/api';
 
   productos: any[] = [];
   mensaje = '';

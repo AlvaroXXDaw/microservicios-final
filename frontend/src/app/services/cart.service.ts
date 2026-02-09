@@ -17,7 +17,7 @@ export interface ItemCarrito {
 export class CartService {
   private http = inject(HttpClient);
   private authData = inject(AuthData);
-  private apiUrl = 'http://localhost/DWEC/Angular/ProyectoMio/backend';
+  private apiUrl = '/api';
   private carrito: ItemCarrito[] = [];
   private carritoSubject = new BehaviorSubject<ItemCarrito[]>([]);
   private estaLogueado = false;

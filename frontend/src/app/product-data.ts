@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ProductData {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost/DWEC/Angular/ProyectoMio/backend';
+  private apiUrl = '/api';
 
   obtenerProductos() {
     return this.http.get<any>(`${this.apiUrl}/obtener_productos.php`);

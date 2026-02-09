@@ -28,7 +28,7 @@ export interface CompraItem {
 export class MisPedidosComponent implements OnInit {
   private http = inject(HttpClient);
   authData = inject(AuthData);
-  private apiUrl = 'http://localhost/DWEC/Angular/ProyectoMio/backend';
+  private apiUrl = '/api';
 
   compras: CompraItem[] = [];
   cargando = true;

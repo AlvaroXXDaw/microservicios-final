@@ -17,7 +17,7 @@ export class CartModalComponent {
 
   cartService = inject(CartService);
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost/DWEC/Angular/ProyectoMio/backend';
+  private apiUrl = '/api';
 
   itemsCarrito: ItemCarrito[] = [];
   compraExitosa = false;

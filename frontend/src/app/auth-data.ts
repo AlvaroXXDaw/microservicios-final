@@ -6,7 +6,7 @@ import { inject, Injectable } from '@angular/core';
 })
 export class AuthData {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost/DWEC/Angular/ProyectoMio/backend';
+  private apiUrl = '/api';
 
   usuario: any = null;
 
