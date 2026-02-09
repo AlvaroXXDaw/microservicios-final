@@ -1,0 +1,72 @@
+﻿<div class="home-page">
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Colección 2026</div>
+      <h1 class="hero-title">Descubre los mejores productos tech</h1>
+      <p class="hero-subtitle">Encuentra lo que necesitas al mejor precio</p>
+      <div class="hero-search-shell">
+        <app-search></app-search>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== BOTONES DE CATEGORÍA DIRECTAMENTE AQUÍ ========== -->
+  <nav class="category-filter">
+    <div class="container">
+      <div class="filter-wrapper">
+        <!-- Botón "Todas" -->
+        <button class="filter-btn" [class.active]="categoriaSeleccionada === ''" (click)="seleccionarCategoria('')">
+          Todas
+        </button>
+
+        <!-- Botones de cada categoría -->
+        @for (categoria of categorias; track categoria) {
+        <button class="filter-btn" [class.active]="categoriaSeleccionada === categoria"
+          (click)="seleccionarCategoria(categoria)">
+          {{ categoria }}
+        </button>
+        }
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="content-header">
+      <div>
+        <p class="lede">Catálogo curado para entusiastas exigentes.</p>
+        <h2>Todos los productos</h2>
+      </div>
+
+      <div class="filters-container">
+        <!-- Orden precio con ngModel + ngModelChange para reordenar -->
+        <select class="filter-select" [(ngModel)]="filtroPrecio" (ngModelChange)="ordenarPorPrecio()">
+          <option value="none">Todos</option>
+          <option value="asc">Precio: menor a mayor</option>
+          <option value="desc">Precio: mayor a menor</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="products-grid">
+      @for (producto of productos; track producto.id) {
+      <article class="product-card" (click)="verDetalle(producto.id)">
+        <div class="card-media">
+          <img [src]="producto.imagen" [alt]="producto.nombre" class="product-image">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">{{ producto.nombre }}</h3>
+          <div class="product-meta">
+            <p class="product-price">
+              {{ producto.precio | convertirMoneda:monedaService.moneda | puntoAComa }}
+            </p>
+          </div>
+          <button class="btn btn-outline">Ver detalles</button>
+        </div>
+      </article>
+      }
+    </div>
+  </main>
+
+</div>

@@ -1,0 +1,90 @@
+﻿@if (producto) {
+<div class="producto-detalle-page">
+  <div class="container">
+
+    <button class="btn-back" (click)="volver()">← Volver a productos</button>
+
+    <div class="producto-detalle-card">
+
+      <div class="producto-imagen-section">
+        <div class="imagen-principal">
+          <img [src]="producto.imagen" [alt]="producto.nombre" class="producto-img">
+        </div>
+      </div>
+
+      <div class="producto-info-section">
+        <div class="producto-header">
+          <p class="eyebrow">{{ producto.categoria || 'Producto' }}</p>
+          <h1 class="producto-titulo">{{ producto.nombre }}</h1>
+          <div class="producto-stock">
+            @if (producto.stock > 0) {
+            <span class="stock-badge">En stock</span>
+            <span class="stock-cantidad">{{ producto.stock }} unidades disponibles</span>
+            @if (cantidadEnCarrito > 0) {
+            <span class="en-carrito">({{ cantidadEnCarrito }} en tu carrito)</span>
+            }
+            } @else {
+            <span class="stock-badge out">Agotado</span>
+            }
+          </div>
+        </div>
+
+        <div class="producto-precio-section">
+          <div class="precio-actual">{{ producto.precio | convertirMoneda:monedaService.moneda | puntoAComa }}</div>
+          <p class="precio-nota">Impuestos incluidos</p>
+        </div>
+
+        <div class="producto-descripcion">
+          <h2 class="section-title">Descripción</h2>
+          <p class="descripcion-texto">{{ producto.descripcion }}</p>
+        </div>
+
+        <div class="producto-acciones">
+          @if (!isAdmin) {
+          <div class="cantidad-selector">
+            <label for="cantidad">Cantidad</label>
+            <div class="cantidad-controls">
+              <button class="btn-cantidad" (click)="disminuirCantidad()">−</button>
+              <input type="number" id="cantidad" [value]="cantidad" min="1" [max]="producto.stock"
+                class="cantidad-input" readonly>
+              <button class="btn-cantidad" (click)="aumentarCantidad()">+</button>
+            </div>
+          </div>
+
+          <!-- @if para mostrar botón diferente según el stock -->
+          @if (producto.stock > 0) {
+          <button class="btn btn-primary btn-add-cart" (click)="agregarAlCarrito()">
+            {{ agregadoAlCarrito ? '¡Añadido!' : 'Añadir al carrito' }}
+          </button>
+          } @else {
+          <button class="btn btn-primary btn-add-cart" disabled>
+            Sin stock
+          </button>
+          }
+          }
+        </div>
+
+        <div class="producto-detalles-extra">
+          <div class="detalle-item">
+            <span class="detalle-label">Envío</span>
+            <span class="detalle-value">Gratis en pedidos +50 €</span>
+          </div>
+          <div class="detalle-item">
+            <span class="detalle-label">Devoluciones</span>
+            <span class="detalle-value">30 días gratis</span>
+          </div>
+          <div class="detalle-item">
+            <span class="detalle-label">Garantía</span>
+            <span class="detalle-value">2 años</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+} @else {
+<div class="loading">Cargando producto...</div>
+}

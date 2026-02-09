@@ -1,0 +1,426 @@
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: var(--bg-surface);
+  border-radius: 0;
+  border: 2px solid var(--ink);
+  box-shadow: none;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #000000;
+  background: var(--ink);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-inverse);
+}
+
+.close-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  font-size: 0.7rem;
+  color: var(--text-inverse);
+  cursor: pointer;
+  padding: 0.35rem 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.close-btn:hover {
+  border-color: #ffffff;
+}
+
+/* Cart Items */
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.5rem;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  background: var(--bg-subtle);
+  border-radius: 0;
+  padding: 0.5rem;
+  border: 1px solid var(--border-medium);
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-info h4 {
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.item-price {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.item-quantity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--ink);
+  background: var(--bg-surface);
+  border-radius: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn:hover {
+  background: var(--bg-subtle);
+}
+
+.item-quantity span {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.remove-btn {
+  background: transparent;
+  border: 1px solid var(--ink);
+  color: var(--text-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+/* Footer */
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: none;
+  background: #fafafa;
+}
+
+.total {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.total strong {
+  font-size: 1.2rem;
+  color: var(--brand);
+  margin-left: 0.5rem;
+}
+
+.buy-btn {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* Empty Cart */
+.empty-cart {
+  padding: 2.5rem;
+  text-align: center;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+}
+
+/* Success Message */
+.success-message {
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 32px;
+  border: 1px solid var(--brand);
+  color: var(--brand);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.success-message h3 {
+  margin: 0 0 0.5rem;
+  color: var(--text-primary);
+}
+
+.success-message p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.pedido-warning {
+  margin: -0.75rem 0 1rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #f59e0b;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.error-message {
+  padding: 0.75rem 1.5rem;
+  background: #fff2f2;
+  color: var(--danger);
+  font-size: 0.8rem;
+  border-top: 1px solid var(--border-light);
+}
+
+/* ============================================
+   RESUMEN DEL PEDIDO - Gastos de envío
+   ============================================ */
+
+.order-summary {
+  padding: 1rem 1.5rem;
+  background: #fafafa;
+  border-top: 1px solid var(--border-light);
+}
+
+/* Mensaje de envío */
+.shipping-message {
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.shipping-free {
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.shipping-info {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+/* Desglose de precios */
+.price-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.price-row .free-shipping {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.total-row {
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-medium);
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.total-row strong {
+  color: var(--brand);
+  font-size: 1.1rem;
+}
+
+/* =============================================
+   ESTILOS PARA QR Y FACTURA
+   ============================================= */
+
+/* #############################################
+   ##          HECHO CON IA                   ##
+   ##   Estilos QR, Factura y Dirección       ##
+   ############################################# */
+
+/* Contenedor del QR */
+.qr-container {
+  margin: 1.5rem 0;
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--bg-subtle, #fafafa);
+  border: 1px solid var(--border-medium, #cfcfcf);
+}
+
+.qr-image {
+  width: 180px;
+  height: 180px;
+  border: 2px solid var(--ink, #111);
+  padding: 8px;
+  background: white;
+}
+
+.qr-text {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary, #4d4d4d);
+}
+
+/* Info de la factura */
+.factura-info {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  background: var(--bg-subtle, #fafafa);
+  border: 1px solid var(--border-medium, #cfcfcf);
+  border-left: 3px solid var(--brand, #e10600);
+}
+
+.factura-id {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary, #4d4d4d);
+}
+
+.factura-id strong {
+  color: var(--brand, #e10600);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Botón ver factura - estilo consistente con la web */
+.btn-factura {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  padding: 0.7rem 1.25rem;
+  background: var(--bg-surface, #fff);
+  color: var(--text-primary, #111);
+  text-decoration: none;
+  border: 1px solid var(--ink, #111);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.15s ease;
+  gap: 0.5rem;
+}
+
+.btn-factura:hover {
+  background: var(--brand, #e10600);
+  color: white;
+  border-color: var(--brand, #e10600);
+}
+
+/* Success message ajustes */
+.success-message .btn-primary {
+  margin-top: 0.5rem;
+}
+
+/* =============================================
+   ============ HECHO CON IA ==================
+   ESTILOS PARA CAMPO DE DIRECCIÓN
+   ============================================= */
+
+.direccion-envio {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background: var(--bg-subtle, #fafafa);
+  border: 1px solid var(--border-medium, #cfcfcf);
+}
+
+.direccion-envio label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary, #4d4d4d);
+  margin-bottom: 0.5rem;
+}
+
+.direccion-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  color: var(--text-primary, #111);
+  background: var(--bg-surface, #fff);
+  border: 1px solid var(--ink, #111);
+}
+
+.direccion-input:focus {
+  outline: none;
+  border-color: var(--brand, #e10600);
+  box-shadow: 0 0 0 1px var(--brand, #e10600);
+}
+
+/* ##        FIN HECHO CON IA                 ## */

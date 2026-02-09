@@ -1,0 +1,72 @@
+﻿<!-- NAVBAR GLOBAL (siempre visible) -->
+<nav class="navbar">
+  <div class="nav-content">
+    <!-- Logo -->
+    <a routerLink="/" class="nav-logo">
+      SanbaTech
+    </a>
+
+    <!-- Links de navegacion -->
+    <div class="nav-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+        Inicio
+      </a>
+
+      <!-- Mis pedidos (solo clientes logueados) -->
+      @if (estaLogueado && !esAdmin) {
+      <a routerLink="/mis-pedidos" routerLinkActive="active" class="nav-item">
+        Mis pedidos
+      </a>
+      }
+
+      <!-- Solo Admin -->
+      @if (esAdmin) {
+      <a routerLink="/admin" routerLinkActive="active" class="nav-item admin-link">
+        Configuracion stock
+      </a>
+      }
+    </div>
+
+    <!-- Botones de auth -->
+    <div class="nav-auth">
+      @if (!enPaginaAuth) {
+      <!-- Selector de Moneda -->
+      <select class="moneda-select" [(ngModel)]="monedaSeleccionada">
+        <option value="EUR">€ EUR</option>
+        <option value="USD">$ USD</option>
+        <option value="CNY">¥ CNY</option>
+      </select>
+
+      <!-- Carrito (solo si esta logueado y NO es admin) -->
+      @if (estaLogueado && !esAdmin) {
+      <button class="cart-btn" (click)="alternarCarrito()">
+        Carrito
+        @if (cantidadItemsCarrito > 0) {
+        <span class="cart-badge">{{ cantidadItemsCarrito }}</span>
+        }
+      </button>
+      }
+
+      <!-- Si NO esta logueado -->
+      @if (!estaLogueado) {
+      <a routerLink="/login" class="btn btn-primary">
+        Iniciar sesion
+      </a>
+      }
+      }
+
+      <!-- Si esta logueado -->
+      @if (estaLogueado) {
+      <div class="user-profile">
+        <span class="username">Hola, {{ authData.usuario.nombre }}</span>
+        <button class="logout-btn" (click)="cerrarSesion()">Salir</button>
+      </div>
+      }
+    </div>
+  </div>
+</nav>
+
+<!-- Cart Modal -->
+@if (mostrarModalCarrito) {
+<app-cart-modal (close)="cerrarCarrito()"></app-cart-modal>
+}

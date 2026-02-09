@@ -1,0 +1,170 @@
+<div class="admin-page">
+  <div class="shell">
+    <header class="hero">
+      <p class="hero-kicker">Panel de Administración</p>
+      <div class="hero-top">
+        <div>
+          <h1 class="hero-title">Control preciso de tu inventario</h1>
+          <p class="hero-copy">Monitorea existencias, precios y movimientos con una vista limpia y enfocada.</p>
+        </div>
+        <button class="btn btn-primary" (click)="abrirModalAnadir()">Añadir producto</button>
+      </div>
+    </header>
+
+    @if (mensaje) {
+    <div class="mensaje" [class.error]="mensajeError" [class.exito]="!mensajeError">
+      {{ mensaje }}
+    </div>
+    }
+
+    <main class="main-content">
+      <section class="stats-grid">
+        <article class="stat-card">
+          <span class="stat-pill">Catálogo</span>
+          <p class="stat-label">Total de productos</p>
+          <p class="stat-value">{{ obtenerTotal() }}</p>
+          <p class="stat-meta">Actualizado hoy</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-pill">Disponibles</span>
+          <p class="stat-label">En stock</p>
+          <p class="stat-value">{{ obtenerConStock() }}</p>
+          <p class="stat-meta">Listos para envío</p>
+        </article>
+        <article class="stat-card warning">
+          <span class="stat-pill">Atención</span>
+          <p class="stat-label">Sin stock</p>
+          <p class="stat-value">{{ obtenerSinStock() }}</p>
+          <p class="stat-meta">Reponer inventario</p>
+        </article>
+        <article class="stat-card accent">
+          <span class="stat-pill">Valor</span>
+          <p class="stat-label">Valor total</p>
+          <p class="stat-value">{{ obtenerValorTotal() | puntoAComa }} €</p>
+          <p class="stat-meta">Incluye IVA</p>
+        </article>
+      </section>
+
+      <section class="table-panel">
+        <div class="table-header">
+          <div>
+            <p class="table-kicker">Inventario</p>
+            <h2 class="table-title">Productos y existencias</h2>
+          </div>
+          <div class="legend">
+            <span class="dot dot-healthy"></span><span>Disponible</span>
+            <span class="dot dot-low"></span><span>Sin stock</span>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (producto of productos; track producto.id) {
+              <tr>
+                <td>
+                  <div class="product-cell">
+                    <img [src]="producto.imagen" [alt]="producto.nombre">
+                    <div class="product-name">
+                      <span class="product-title">{{ producto.nombre }}</span>
+                      <span class="product-sub">{{ producto.categoria }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="price-cell">{{ producto.precio | puntoAComa }} €</td>
+                <td>
+                  <span class="badge" [class.badge-success]="producto.stock > 0"
+                    [class.badge-danger]="producto.stock === 0">
+                    {{ producto.stock }} uds
+                  </span>
+                </td>
+                <td>
+                  <div class="action-group">
+                    <button class="btn-inline" (click)="abrirModalEditar(producto)">Editar Stock</button>
+                  </div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Modal Añadir Producto -->
+@if (mostrarModalAnadir) {
+<div class="modal-overlay" (click)="cerrarModalAnadir()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Añadir Nuevo Producto</h2>
+      <button class="close-btn" (click)="cerrarModalAnadir()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Nombre *</label>
+        <input type="text" [(ngModel)]="nuevoProducto.nombre" placeholder="Nombre del producto">
+      </div>
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea [(ngModel)]="nuevoProducto.descripcion" placeholder="Descripción del producto"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Precio *</label>
+          <input type="number" [(ngModel)]="nuevoProducto.precio" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Stock *</label>
+          <input type="number" [(ngModel)]="nuevoProducto.stock" placeholder="0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Categoría</label>
+        <input type="text" [(ngModel)]="nuevoProducto.categoria" placeholder="Ej: Ordenadores, Audio...">
+      </div>
+      <div class="form-group">
+        <label>URL de imagen</label>
+        <input type="text" [(ngModel)]="nuevoProducto.imagen" placeholder="https://...">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarModalAnadir()">Cancelar</button>
+      <button class="btn btn-primary" (click)="guardarNuevoProducto()">Guardar Producto</button>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Modal Editar Stock -->
+@if (mostrarModalEditar) {
+<div class="modal-overlay" (click)="cerrarModalEditar()">
+  <div class="modal-content modal-small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Editar Stock</h2>
+      <button class="close-btn" (click)="cerrarModalEditar()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="edit-product-name">{{ productoEditando?.nombre }}</p>
+      <div class="form-group">
+        <label>Nuevo Stock</label>
+        <input type="number" [(ngModel)]="nuevoStock" min="0">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarModalEditar()">Cancelar</button>
+      <button class="btn btn-primary" (click)="guardarStock()">Guardar</button>
+    </div>
+  </div>
+</div>
+}

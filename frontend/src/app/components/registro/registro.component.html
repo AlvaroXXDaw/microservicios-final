@@ -1,0 +1,45 @@
+<div class="registro-page">
+  <div class="registro-container">
+    <div class="registro-card">
+
+      <div class="registro-header">
+        <h1>Crear cuenta</h1>
+        <p>Completa el formulario para registrarte</p>
+      </div>
+
+      <form class="registro-form">
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input #nombre type="text" id="nombre" class="form-input" placeholder="Juan Pérez">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input #email type="email" id="email" class="form-input" placeholder="tu@email.com">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input #password type="password" id="password" class="form-input" placeholder="Mínimo 6 caracteres">
+        </div>
+
+        <div class="form-group">
+          <label for="password-confirm">Confirmar contraseña</label>
+          <input #passwordConfirm
+            (keyup.enter)="registrarse(nombre.value, email.value, password.value, passwordConfirm.value)"
+            type="password" id="password-confirm" class="form-input" placeholder="Repite tu contraseña">
+        </div>
+
+        <button type="button" (click)="registrarse(nombre.value, email.value, password.value, passwordConfirm.value)"
+          class="btn btn-primary">
+          Crear cuenta
+        </button>
+
+        <div class="form-footer">
+          <a href="/login" class="link">¿Ya tienes cuenta? Inicia sesión</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

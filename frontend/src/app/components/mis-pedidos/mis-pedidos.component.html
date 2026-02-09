@@ -1,0 +1,88 @@
+﻿<div class="mis-pedidos-page">
+  <header class="hero">
+    <p class="hero-kicker">Mis pedidos</p>
+    <div class="hero-content">
+      <div>
+        <h1>Tu historial de compras</h1>
+        <p class="hero-copy">Consulta tus pedidos, precios y facturas en un solo lugar.</p>
+      </div>
+      @if (estaLogueado && !esAdmin) {
+      <div class="hero-badge">{{ totalCompras }} pedidos</div>
+      }
+    </div>
+  </header>
+
+  @if (!estaLogueado) {
+  <section class="state-panel">
+    <h2>Necesitas iniciar sesion</h2>
+    <p>Inicia sesion para ver tus pedidos guardados.</p>
+    <a class="btn btn-primary" routerLink="/login">Ir a login</a>
+  </section>
+  } @else if (esAdmin) {
+  <section class="state-panel">
+    <h2>Panel no disponible</h2>
+    <p>Esta seccion es solo para clientes.</p>
+    <a class="btn btn-secondary" routerLink="/admin">Volver al panel</a>
+  </section>
+  } @else {
+
+  <section class="stats-grid">
+    <article class="stat-card">
+      <span class="stat-label">Total pedidos</span>
+      <span class="stat-value">{{ totalCompras }}</span>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Total gastado</span>
+      <span class="stat-value">{{ totalGastado | number:'1.2-2' | puntoAComa }} EUR</span>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Usuario</span>
+      <span class="stat-value">{{ nombreUsuario || 'Cliente' }}</span>
+    </article>
+  </section>
+
+  @if (cargando) {
+  <section class="state-panel">
+    <h2>Cargando pedidos...</h2>
+    <p>Un momento, estamos preparando tu historial.</p>
+  </section>
+  } @else if (mensajeError) {
+  <section class="state-panel error">
+    <h2>Ups, hubo un problema</h2>
+    <p>{{ mensajeError }}</p>
+    <button class="btn btn-secondary" (click)="cargarCompras()">Reintentar</button>
+  </section>
+  } @else if (compras.length === 0) {
+  <section class="state-panel">
+    <h2>Aun no tienes pedidos</h2>
+    <p>Cuando compres algo, aqui veras el historial y tus facturas.</p>
+    <a class="btn btn-primary" routerLink="/">Ir a la tienda</a>
+  </section>
+  } @else {
+
+  <section class="orders-grid">
+    @for (compra of compras; track compra.compra_id) {
+    <article class="order-card">
+      <div class="order-main">
+        <img [src]="compra.producto_imagen" [alt]="compra.producto_nombre" class="order-image">
+        <div class="order-info">
+          <h3>{{ compra.producto_nombre }}</h3>
+          <p class="order-meta">Pedido #{{ compra.compra_id }} · {{ compra.fecha_compra }}</p>
+          <div class="order-tags">
+            <span class="tag">Cantidad: {{ compra.cantidad }}</span>
+            <span class="tag">Precio: {{ compra.precio_unitario | puntoAComa }} EUR</span>
+            <span class="tag tag-total">Total: {{ compra.total | puntoAComa }} EUR</span>
+          </div>
+        </div>
+      </div>
+      <div class="order-actions">
+        @if (compra.factura_url) {
+        <a class="btn btn-secondary" [href]="compra.factura_url" target="_blank">Ver factura</a>
+        }
+      </div>
+    </article>
+    }
+  </section>
+  }
+  }
+</div>

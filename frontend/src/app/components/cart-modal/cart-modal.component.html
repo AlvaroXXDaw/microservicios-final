@@ -1,0 +1,121 @@
+<div class="modal-overlay">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>Tu Carrito</h2>
+      <button class="close-btn" (click)="cerrarModal()">Cerrar</button>
+    </div>
+
+    <!-- #############################################
+         ##          HECHO CON IA                   ##
+         ##   Mensaje de éxito con QR y factura     ##
+         ############################################# -->
+    @if (compraExitosa) {
+    <div class="success-message">
+      <span class="success-icon">✓</span>
+      <h3>{{ mensajeCompra }}</h3>
+      <p>Gracias por tu compra</p>
+      @if (!pedidoGuardado) {
+      <p class="pedido-warning">No se pudo guardar en Mis pedidos.</p>
+      }
+
+      <div class="factura-info">
+        <p class="factura-id">Factura: <strong>{{ facturaId }}</strong></p>
+      </div>
+
+      <div class="qr-container">
+        <img [src]="qrUrl" alt="QR de la factura" class="qr-image">
+        <p class="qr-text">Escanea para abrir tu factura</p>
+      </div>
+
+      <a [href]="facturaUrl" target="_blank" class="btn btn-factura">
+        📄 Ver Factura
+      </a>
+
+      <button class="btn btn-primary" (click)="cerrarModal()">Cerrar</button>
+    </div>
+    <!-- ##        FIN HECHO CON IA                 ## -->
+    } @else {
+
+    <!-- Cart Items (código original) -->
+    @if (itemsCarrito.length === 0) {
+    <div class="empty-cart">
+      <p>Tu carrito está vacío</p>
+    </div>
+    } @else {
+    <div class="cart-items">
+      @for (item of itemsCarrito; track item.id) {
+      <div class="cart-item">
+        <img [src]="item.imagen" [alt]="item.nombre" class="item-image">
+        <div class="item-info">
+          <h4>{{ item.nombre }}</h4>
+          <p class="item-price">{{ item.precio | puntoAComa }} €</p>
+        </div>
+        <div class="item-quantity">
+          <button class="qty-btn" (click)="actualizarCantidad(item.id, -1)">−</button>
+          <span>{{ item.cantidad }}</span>
+          <button class="qty-btn" (click)="actualizarCantidad(item.id, 1)">+</button>
+        </div>
+        <button class="remove-btn" (click)="eliminarItem(item.id)">Eliminar</button>
+      </div>
+      }
+    </div>
+
+    <!-- Resumen del pedido -->
+    <div class="order-summary">
+
+      @if (envioGratis) {
+      <div class="shipping-message shipping-free">
+        ¡Tienes envío GRATIS!
+      </div>
+      } @else {
+      <div class="shipping-message shipping-info">
+        Añade {{ faltaParaEnvioGratis.toFixed(2) | puntoAComa }} € más para envío gratis
+      </div>
+      }
+
+      <!-- #############################################
+           ##          HECHO CON IA                   ##
+           ##   Campo de dirección de envío           ##
+           ############################################# -->
+      <div class="direccion-envio">
+        <label for="direccion">Dirección de envío *</label>
+        <input type="text" id="direccion" [(ngModel)]="direccionEnvio" placeholder="Ej: Calle Mayor 123, 30001 Murcia"
+          class="direccion-input">
+      </div>
+      <!-- ##        FIN HECHO CON IA                 ## -->
+
+      <div class="price-breakdown">
+        <div class="price-row">
+          <span>Subtotal</span>
+          <span>{{ subtotal.toFixed(2) | puntoAComa }} €</span>
+        </div>
+        <div class="price-row">
+          <span>Gastos de envío</span>
+          @if (envioGratis) {
+          <span class="free-shipping">GRATIS</span>
+          } @else {
+          <span>{{ gastosEnvio.toFixed(2) | puntoAComa }} €</span>
+          }
+        </div>
+        <div class="price-row total-row">
+          <span>Total</span>
+          <strong>{{ total.toFixed(2) | puntoAComa }} €</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary buy-btn" (click)="comprar()" [disabled]="procesandoCompra">
+        {{ procesandoCompra ? 'Procesando...' : 'Comprar ahora' }}
+      </button>
+    </div>
+    }
+
+    @if (mensajeCompra && !compraExitosa) {
+    <div class="error-message">{{ mensajeCompra }}</div>
+    }
+    }
+  </div>
+</div>
