@@ -8,6 +8,14 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 20s
+    ports:
+      - "3306:3306"
 
   backend:
     build: ./backend
@@ -17,18 +25,22 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      # Si tu config.php usa DB_HOST, añade esto. Si ya haces fallback a "db", no pasa nada.
+      DB_HOST: db
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   webserver:
     image: nginx:alpine
     ports:
       - "${NGINX_PORT}:80"
     volumes:
-      - ./frontend/dist/ProyectoMio/browser:/usr/share/nginx/html
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/dist/ProyectoMio/browser:/usr/share/nginx/html:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
-      - backend
+      backend:
+        condition: service_started
 
   portainer:
     image: portainer/portainer-ce
@@ -40,11 +52,12 @@ services:
 
   ngrok:
     image: ngrok/ngrok
-    command: http webserver:80
+    command: ["http", "webserver:80", "--log", "stdout"]
     environment:
       NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
     depends_on:
-      - webserver
+      webserver:
+        condition: service_started
 
 volumes:
   db_data:
