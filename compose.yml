@@ -25,7 +25,6 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      # Si tu config.php usa DB_HOST, añade esto. Si ya haces fallback a "db", no pasa nada.
       DB_HOST: db
     depends_on:
       db:
